@@ -12,21 +12,15 @@
 namespace FOS\UserBundle\Form\Type;
 
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Security\Core\Validator\Constraint\UserPassword as OldUserPassword;
 use Symfony\Component\Security\Core\Validator\Constraints\UserPassword;
 
 class ChangePasswordFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        if (class_exists('Symfony\Component\Security\Core\Validator\Constraints\UserPassword')) {
-            $constraint = new UserPassword();
-        } else {
-            // Symfony 2.1 support with the old constraint class
-            $constraint = new OldUserPassword();
-        }
+        $constraint = new UserPassword();
 
         $builder->add('current_password', 'password', array(
             'label' => 'form.current_password',
@@ -43,7 +37,7 @@ class ChangePasswordFormType extends AbstractType
         ));
     }
 
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function setDefaultOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'data_class' => 'FOS\UserBundle\Form\Model\ChangePassword',

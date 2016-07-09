@@ -11,7 +11,7 @@
 
 namespace FOS\UserBundle\Controller;
 
-use Symfony\Component\DependencyInjection\ContainerAware;
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -21,8 +21,10 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  * @author Thibault Duplessis <thibault.duplessis@gmail.com>
  * @author Christophe Coevoet <stof@notk.org>
  */
-class GroupController extends ContainerAware
+class GroupController
 {
+    use ContainerAwareTrait;
+
     /**
      * Show all groups
      */
@@ -106,7 +108,7 @@ class GroupController extends ContainerAware
      * @param string $key   property name
      * @param mixed  $value property value
      *
-     * @throws NotFoundException                    if user does not exist
+     * @throws NotFoundHttpException if user does not exist
      * @return \FOS\UserBundle\Model\GroupInterface
      */
     protected function findGroupBy($key, $value)
