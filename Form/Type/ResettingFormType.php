@@ -28,7 +28,7 @@ class ResettingFormType extends AbstractType
         ));
     }
 
-    public function setDefaultOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'data_class' => 'FOS\UserBundle\Form\Model\ChangePassword',
@@ -36,7 +36,7 @@ class ResettingFormType extends AbstractType
         ));
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'fos_user_resetting';
     }

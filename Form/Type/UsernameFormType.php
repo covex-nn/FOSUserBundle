@@ -45,9 +45,9 @@ class UsernameFormType extends AbstractType
     }
 
     /**
-     * @see Symfony\Component\Form\FormTypeInterface::getName()
+     * @see Symfony\Component\Form\FormTypeInterface::getBlockPrefix()
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'fos_user_username';
     }
