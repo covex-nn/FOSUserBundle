@@ -11,3 +11,5 @@ install: composer install
 
 notifications:
   email: friendsofsymfony-dev@googlegroups.com
+
+script: phpunit

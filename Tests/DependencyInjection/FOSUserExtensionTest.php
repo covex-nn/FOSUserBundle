@@ -177,10 +177,10 @@ class FOSUserExtensionTest extends \PHPUnit_Framework_TestCase
     {
         $this->createEmptyConfiguration();
 
-        $this->assertParameter('fos_user_profile', 'fos_user.profile.form.type');
-        $this->assertParameter('fos_user_registration', 'fos_user.registration.form.type');
-        $this->assertParameter('fos_user_change_password', 'fos_user.change_password.form.type');
-        $this->assertParameter('fos_user_resetting', 'fos_user.resetting.form.type');
+        $this->assertParameter('FOS\UserBundle\Form\Type\ProfileFormType', 'fos_user.profile.form.type');
+        $this->assertParameter('FOS\UserBundle\Form\Type\RegistrationFormType', 'fos_user.registration.form.type');
+        $this->assertParameter('FOS\UserBundle\Form\Type\ChangePasswordFormType', 'fos_user.change_password.form.type');
+        $this->assertParameter('FOS\UserBundle\Form\Type\ResettingFormType', 'fos_user.resetting.form.type');
     }
 
     public function testUserLoadFormClass()
