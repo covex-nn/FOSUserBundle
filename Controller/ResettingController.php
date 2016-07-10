@@ -44,7 +44,9 @@ class ResettingController implements ContainerAwareInterface
      */
     public function sendEmailAction()
     {
-        $username = $this->container->get('request')->request->get('username');
+        /** @var $requestStack \Symfony\Component\HttpFoundation\RequestStack */
+        $requestStack = $this->container->get('request_stack');
+        $username = $requestStack->getCurrentRequest()->request->get('username');
 
         /** @var $user UserInterface */
         $user = $this->container->get('fos_user.user_manager')->findUserByUsernameOrEmail($username);

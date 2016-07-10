@@ -21,7 +21,9 @@ class SecurityController implements ContainerAwareInterface
 
     public function loginAction()
     {
-        $request = $this->container->get('request');
+        $requestStack = $this->container->get('request_stack');
+        /** @var $requestStack \Symfony\Component\HttpFoundation\RequestStack */
+        $request = $requestStack->getCurrentRequest();
         /* @var $request \Symfony\Component\HttpFoundation\Request */
         $session = $request->getSession();
         /* @var $session \Symfony\Component\HttpFoundation\Session\Session */
