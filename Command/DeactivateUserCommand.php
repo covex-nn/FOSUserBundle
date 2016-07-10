@@ -64,7 +64,7 @@ EOT
 
         if (!$input->getArgument('username')) {
             $usernameQuestion = new Question('Please choose a username:');
-            $usernameQuestion->setValidator(function () {
+            $usernameQuestion->setValidator(function ($username) {
                 if (empty($username)) {
                     throw new \Exception('Username can not be empty');
                 }
