@@ -11,6 +11,7 @@
 
 namespace FOS\UserBundle\Controller;
 
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -21,7 +22,7 @@ use FOS\UserBundle\Model\UserInterface;
  *
  * @author Christophe Coevoet <stof@notk.org>
  */
-class ProfileController
+class ProfileController implements ContainerAwareInterface
 {
     use ContainerAwareTrait;
 

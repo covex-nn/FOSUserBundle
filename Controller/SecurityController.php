@@ -11,10 +11,11 @@
 
 namespace FOS\UserBundle\Controller;
 
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\Security\Core\Security;
 
-class SecurityController
+class SecurityController implements ContainerAwareInterface
 {
     use ContainerAwareTrait;
 

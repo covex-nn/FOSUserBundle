@@ -11,6 +11,7 @@
 
 namespace FOS\UserBundle\Controller;
 
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -22,7 +23,7 @@ use FOS\UserBundle\Model\UserInterface;
  * @author Thibault Duplessis <thibault.duplessis@gmail.com>
  * @author Christophe Coevoet <stof@notk.org>
  */
-class ChangePasswordController
+class ChangePasswordController implements ContainerAwareInterface
 {
     use ContainerAwareTrait;
 
