@@ -45,7 +45,7 @@ class RegistrationFormHandler
 
         $request = $this->requestStack->getCurrentRequest();
         if ('POST' === $request->getMethod()) {
-            $this->form->submit($request);
+            $this->form->handleRequest($request);
 
             if ($this->form->isValid()) {
                 $this->onSuccess($user, $confirmation);
