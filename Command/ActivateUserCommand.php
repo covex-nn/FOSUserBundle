@@ -15,6 +15,7 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Question\Question;
 
 /**
  * @author Antoine Hérault <antoine.herault@gmail.com>
@@ -58,18 +59,19 @@ EOT
      */
     protected function interact(InputInterface $input, OutputInterface $output)
     {
-        if (!$input->getArgument('username')) {
-            $username = $this->getHelper('dialog')->askAndValidate(
-                $output,
-                'Please choose a username:',
-                function($username) {
-                    if (empty($username)) {
-                        throw new \Exception('Username can not be empty');
-                    }
+        /** @var \Symfony\Component\Console\Helper\QuestionHelper $helper */
+        $helper = $this->getHelper('question');
 
-                    return $username;
+        if (!$input->getArgument('username')) {
+            $usernameQuestion = new Question('Please choose a username:');
+            $usernameQuestion->setValidator(function () {
+                if (empty($username)) {
+                    throw new \Exception('Username can not be empty');
                 }
-            );
+
+                return $username;
+            });
+            $username = $helper->ask($input, $output, $usernameQuestion);
             $input->setArgument('username', $username);
         }
     }

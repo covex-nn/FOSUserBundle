@@ -16,6 +16,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Question\Question;
 use FOS\UserBundle\Util\UserManipulator;
 
 /**
@@ -75,32 +76,31 @@ abstract class RoleCommand extends ContainerAwareCommand
      */
     protected function interact(InputInterface $input, OutputInterface $output)
     {
-        if (!$input->getArgument('username')) {
-            $username = $this->getHelper('dialog')->askAndValidate(
-                $output,
-                'Please choose a username:',
-                function($username) {
-                    if (empty($username)) {
-                        throw new \Exception('Username can not be empty');
-                    }
+        /** @var \Symfony\Component\Console\Helper\QuestionHelper $helper */
+        $helper = $this->getHelper('question');
 
-                    return $username;
+        if (!$input->getArgument('username')) {
+            $usernameQuestion = new Question('Please choose a username:');
+            $usernameQuestion->setValidator(function () {
+                if (empty($username)) {
+                    throw new \Exception('Username can not be empty');
                 }
-            );
+
+                return $username;
+            });
+            $username = $helper->ask($input, $output, $usernameQuestion);
             $input->setArgument('username', $username);
         }
         if ((true !== $input->getOption('super')) && !$input->getArgument('role')) {
-            $role = $this->getHelper('dialog')->askAndValidate(
-                $output,
-                'Please choose a role:',
-                function($role) {
-                    if (empty($role)) {
-                        throw new \Exception('Role can not be empty');
-                    }
-
-                    return $role;
+            $roleQuestion = new Question('Please choose a role:');
+            $roleQuestion->setValidator(function ($role) {
+                if (empty($role)) {
+                    throw new \Exception('Role can not be empty');
                 }
-            );
+
+                return $role;
+            });
+            $role = $helper->ask($input, $output, $roleQuestion);
             $input->setArgument('role', $role);
         }
     }
