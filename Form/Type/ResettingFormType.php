@@ -14,6 +14,7 @@ namespace FOS\UserBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class ResettingFormType extends AbstractType
 {
@@ -36,8 +37,23 @@ class ResettingFormType extends AbstractType
         ));
     }
 
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        return
+            method_exists('Symfony\Component\Form\FormTypeInterface', 'setDefaultOptions') ?
+                $this->getBlockPrefix() :
+                get_class($this);
+    }
+    
     public function getBlockPrefix()
     {
         return 'fos_user_resetting';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getName() {
+        return $this->getBlockPrefix();
     }
 }

@@ -7,7 +7,7 @@
     <services>
 
         <service id="fos_user.profile.form" class="Symfony\Component\Form\Form">
-            <factory method="createNamed" service="form.factory" />
+            <!-- factory service="form.factory" method="createNamed" /-->
             <argument>%fos_user.profile.form.name%</argument>
             <argument>%fos_user.profile.form.type%</argument>
             <argument>null</argument>
@@ -23,8 +23,13 @@
 
         <service id="fos_user.profile.form.handler.default" class="FOS\UserBundle\Form\Handler\ProfileFormHandler" public="false">
             <argument type="service" id="fos_user.profile.form" />
-            <argument type="service" id="request_stack" />
             <argument type="service" id="fos_user.user_manager" />
+            <call method="setRequestStack">
+                <argument type="service" id="request_stack" on-invalid="ignore" />
+            </call>
+            <call method="setRequest">
+                <argument type="service" id="request" on-invalid="ignore" />
+            </call>
         </service>
 
     </services>

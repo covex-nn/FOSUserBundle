@@ -14,7 +14,7 @@
         </service>
 
         <service id="fos_user.entity_manager" class="Doctrine\ORM\EntityManager" public="false">
-            <factory service="doctrine" method="getManager" />
+            <!-- factory service="doctrine" method="getManager" /-->
             <argument>%fos_user.model_manager_name%</argument>
         </service>
 

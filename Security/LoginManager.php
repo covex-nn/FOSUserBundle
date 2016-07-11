@@ -18,6 +18,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\User\UserCheckerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
+use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Security\Http\RememberMe\RememberMeServicesInterface;
 use Symfony\Component\Security\Http\Session\SessionAuthenticationStrategyInterface;
 
@@ -29,15 +30,15 @@ use Symfony\Component\Security\Http\Session\SessionAuthenticationStrategyInterfa
 class LoginManager implements LoginManagerInterface
 {
     private $tokenStorage;
+    private $securityContext;
     private $userChecker;
     private $sessionStrategy;
     private $container;
 
-    public function __construct(TokenStorage $tokenStorage, UserCheckerInterface $userChecker,
+    public function __construct(UserCheckerInterface $userChecker,
                                 SessionAuthenticationStrategyInterface $sessionStrategy,
                                 ContainerInterface $container)
     {
-        $this->tokenStorage = $tokenStorage;
         $this->userChecker = $userChecker;
         $this->sessionStrategy = $sessionStrategy;
         $this->container = $container;
@@ -49,8 +50,13 @@ class LoginManager implements LoginManagerInterface
 
         $token = $this->createToken($firewallName, $user);
 
-        $request = $this->container->get("request_stack")
-            ->getCurrentRequest();
+        if ($this->container->has("request")) {
+            $request = $this->container->get("request");
+        } elseif ($this->container->has("request_stack")) {
+            $this->container->get("request_stack");
+        } else {
+            $request = null;
+        }
         if ($request) {
             $this->sessionStrategy->onAuthentication($request, $token);
 
@@ -68,9 +74,23 @@ class LoginManager implements LoginManagerInterface
             }
         }
 
-        $this->tokenStorage->setToken($token);
+        if ($this->tokenStorage) {
+            $this->tokenStorage->setToken($token);
+        } elseif ($this->securityContext) {
+            $this->securityContext->setToken($token);
+        }
     }
-
+    
+    public function setTokenStorage(TokenStorage $tokenStorage = null)
+    {
+        $this->tokenStorage = $tokenStorage;
+    }
+    
+    public function setSecurityContext(SecurityContextInterface $securityContext = null)
+    {
+        $this->securityContext = $securityContext;
+    }
+    
     protected function createToken($firewall, UserInterface $user)
     {
         return new UsernamePasswordToken($user, null, $firewall, $user->getRoles());

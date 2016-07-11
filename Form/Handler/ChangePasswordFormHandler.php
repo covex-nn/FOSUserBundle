@@ -15,18 +15,15 @@ use FOS\UserBundle\Form\Model\ChangePassword;
 use FOS\UserBundle\Model\UserInterface;
 use FOS\UserBundle\Model\UserManagerInterface;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\HttpFoundation\RequestStack;
 
-class ChangePasswordFormHandler
+class ChangePasswordFormHandler extends RequestFormHandler
 {
-    protected $requestStack;
     protected $userManager;
     protected $form;
 
-    public function __construct(FormInterface $form, RequestStack $requestStack, UserManagerInterface $userManager)
+    public function __construct(FormInterface $form, UserManagerInterface $userManager)
     {
         $this->form = $form;
-        $this->requestStack = $requestStack;
         $this->userManager = $userManager;
     }
 
@@ -42,7 +39,7 @@ class ChangePasswordFormHandler
     {
         $this->form->setData(new ChangePassword());
 
-        $request = $this->requestStack->getCurrentRequest();
+        $request = $this->getRequest();
         if ('POST' === $request->getMethod()) {
             $this->form->handleRequest($request);
 

@@ -11,8 +11,10 @@
 
 namespace FOS\UserBundle\Controller;
 
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
 /**
  * ContainerAware controller.
@@ -32,5 +34,37 @@ abstract class ContainerAwareController implements ContainerAwareInterface
     public function setContainer(ContainerInterface $container = null)
     {
         $this->container = $container;
+    }
+
+    /**
+     * Get request
+     *
+     * @return Request
+     */
+    protected function getRequest()
+    {
+        if ($this->container->has("request")) {
+            $request = $this->container->get("request");
+        } elseif ($this->container->has("request_stack")) {
+            $request = $this->container->get("request_stack")->getCurrentRequest();
+        } else {
+            $request = null;
+        }
+        return $request;
+    }
+
+    /**
+     * Get token
+     *
+     * @return TokenInterface
+     */
+    protected function getToken()
+    {
+        if ($this->container->has('security.context')) {
+            $token = $this->container->get('security.context')->getToken();
+        } else {
+            $token = $this->container->get('security.token_storage')->getToken();
+        }
+        return $token;
     }
 }

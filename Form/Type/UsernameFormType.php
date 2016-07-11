@@ -51,4 +51,11 @@ class UsernameFormType extends AbstractType
     {
         return 'fos_user_username';
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getName() {
+        return $this->getBlockPrefix();
+    }
 }

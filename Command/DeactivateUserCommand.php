@@ -11,16 +11,14 @@
 
 namespace FOS\UserBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Question\Question;
 
 /**
  * @author Antoine Hérault <antoine.herault@gmail.com>
  */
-class DeactivateUserCommand extends ContainerAwareCommand
+class DeactivateUserCommand extends HelperAwareCommand
 {
     /**
      * @see Command
@@ -59,19 +57,8 @@ EOT
      */
     protected function interact(InputInterface $input, OutputInterface $output)
     {
-        /** @var \Symfony\Component\Console\Helper\QuestionHelper $helper */
-        $helper = $this->getHelper('question');
-
         if (!$input->getArgument('username')) {
-            $usernameQuestion = new Question('Please choose a username:');
-            $usernameQuestion->setValidator(function ($username) {
-                if (empty($username)) {
-                    throw new \Exception('Username can not be empty');
-                }
-
-                return $username;
-            });
-            $username = $helper->ask($input, $output, $usernameQuestion);
+            $username = $this->ask($input, $output, 'Please choose a username:', 'Username can not be empty');
             $input->setArgument('username', $username);
         }
     }

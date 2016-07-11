@@ -14,7 +14,7 @@
         </service>
 
         <service id="fos_user.document_manager" class="Doctrine\ODM\MongoDB\DocumentManager" public="false">
-            <factory service="doctrine_mongodb" method="getManager" />
+            <!-- factory service="doctrine_mongodb" method="getManager" /-->
             <argument>%fos_user.model_manager_name%</argument>
         </service>
 

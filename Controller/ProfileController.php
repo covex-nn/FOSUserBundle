@@ -27,7 +27,7 @@ class ProfileController extends ContainerAwareController
      */
     public function showAction()
     {
-        $user = $this->container->get('security.token_storage')->getToken()->getUser();
+        $user = $this->getToken()->getUser();
         if (!is_object($user) || !$user instanceof UserInterface) {
             throw new AccessDeniedException('This user does not have access to this section.');
         }
@@ -40,7 +40,7 @@ class ProfileController extends ContainerAwareController
      */
     public function editAction()
     {
-        $user = $this->container->get('security.token_storage')->getToken()->getUser();
+        $user = $this->getToken()->getUser();
         if (!is_object($user) || !$user instanceof UserInterface) {
             throw new AccessDeniedException('This user does not have access to this section.');
         }

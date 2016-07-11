@@ -14,6 +14,7 @@ namespace FOS\UserBundle\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\Exception\AccountStatusException;
 use FOS\UserBundle\Model\UserInterface;
@@ -106,14 +107,15 @@ class RegistrationController extends ContainerAwareController
      */
     public function confirmedAction()
     {
-        $tokenStorage = $this->container->get('security.token_storage');
-        $user = $tokenStorage->getToken()->getUser();
+        /** @var UsernamePasswordToken $token */
+        $token = $this->getToken();
+        $user = $token->getUser();
         if (!is_object($user) || !$user instanceof UserInterface) {
             throw new AccessDeniedException('This user does not have access to this section.');
         }
 
         return $this->container->get('templating')->renderResponse('FOSUserBundle:Registration:confirmed.html.'.$this->getEngine(), array(
-            'tokenStorage' => $tokenStorage,
+            'targetPath' => '_security.' . $token->getProviderKey() . '.target_path',
         ));
     }
 
