@@ -53,7 +53,7 @@ class LoginManager implements LoginManagerInterface
         if ($this->container->has("request")) {
             $request = $this->container->get("request");
         } elseif ($this->container->has("request_stack")) {
-            $this->container->get("request_stack");
+            $request = $this->container->get("request_stack")->getCurrentRequest();
         } else {
             $request = null;
         }
