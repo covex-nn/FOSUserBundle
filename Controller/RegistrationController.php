@@ -11,8 +11,6 @@
 
 namespace FOS\UserBundle\Controller;
 
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -26,10 +24,8 @@ use FOS\UserBundle\Model\UserInterface;
  * @author Thibault Duplessis <thibault.duplessis@gmail.com>
  * @author Christophe Coevoet <stof@notk.org>
  */
-class RegistrationController implements ContainerAwareInterface
+class RegistrationController extends ContainerAwareController
 {
-    use ContainerAwareTrait;
-
     public function registerAction()
     {
         $form = $this->container->get('fos_user.registration.form');
