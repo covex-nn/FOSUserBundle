@@ -39,10 +39,7 @@ class ResettingFormType extends AbstractType
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        return
-            method_exists('Symfony\Component\Form\FormTypeInterface', 'setDefaultOptions') ?
-                $this->getBlockPrefix() :
-                get_class($this);
+        $this->configureOptions($resolver);
     }
     
     public function getBlockPrefix()
@@ -54,6 +51,9 @@ class ResettingFormType extends AbstractType
      * {@inheritdoc}
      */
     public function getName() {
-        return $this->getBlockPrefix();
+        return
+            method_exists('Symfony\Component\Form\FormTypeInterface', 'setDefaultOptions') ?
+                $this->getBlockPrefix() :
+                get_class($this);
     }
 }
